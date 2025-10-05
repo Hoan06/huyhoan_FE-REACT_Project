@@ -1,0 +1,123 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "john_doe",
+      "email": "john@example.com",
+      "password": "hashed_password",
+      "created_at": "2025-02-28T12:00:00Z"
+    },
+    {
+      "id": 2,
+      "username": "jane_smith",
+      "email": "jane@example.com",
+      "password": "hashed_password",
+      "created_at": "2025-03-01T09:00:00Z"
+    },
+    {
+      "id": 3,
+      "username": "alex_lee",
+      "email": "alex@example.com",
+      "password": "hashed_password",
+      "created_at": "2025-03-02T15:30:00Z"
+    }
+  ],
+  "boards": [
+    {
+      "id": 101,
+      "user_id": 1,
+      "title": "Dự án Website",
+      "description": "Quản lý tiến độ dự án website",
+      "backdrop": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/640px-Cat_August_2010-4.jpg",
+      "is_starred": true,
+      "created_at": "2025-02-28T12:30:00Z"
+    },
+    {
+      "id": 102,
+      "user_id": 2,
+      "title": "Marketing Campaign",
+      "description": "Chiến dịch marketing Q2",
+      "backdrop": "",
+      "is_starred": false,
+      "created_at": "2025-03-01T10:00:00Z"
+    },
+    {
+      "id": 103,
+      "user_id": 3,
+      "title": "App Mobile",
+      "description": "Phát triển app mobile mới",
+      "backdrop": "",
+      "is_starred": true,
+      "created_at": "2025-03-02T11:00:00Z"
+    }
+  ],
+  "lists": [
+    {
+      "id": 201,
+      "board_id": 101,
+      "title": "Việc cần làm",
+      "created_at": "2025-02-28T13:00:00Z"
+    },
+    {
+      "id": 202,
+      "board_id": 102,
+      "title": "Ideas",
+      "created_at": "2025-03-01T10:30:00Z"
+    },
+    {
+      "id": 203,
+      "board_id": 103,
+      "title": "Backlog",
+      "created_at": "2025-03-02T11:30:00Z"
+    }
+  ],
+  "tasks": [
+    {
+      "id": 301,
+      "list_id": 201,
+      "title": "Thiết kế giao diện",
+      "description": "Tạo wireframe cho trang chủ",
+      "status": "pending",
+      "due_date": "2025-03-05T23:59:59Z",
+      "created_at": "2025-02-28T13:30:00Z"
+    },
+    {
+      "id": 302,
+      "list_id": 202,
+      "title": "Nghiên cứu thị trường",
+      "description": "Phân tích đối thủ",
+      "status": "in_progress",
+      "due_date": "2025-03-06T17:00:00Z",
+      "created_at": "2025-03-01T11:00:00Z"
+    },
+    {
+      "id": 303,
+      "list_id": 203,
+      "title": "Setup project",
+      "description": "Khởi tạo repo Git",
+      "status": "done",
+      "due_date": "2025-03-04T20:00:00Z",
+      "created_at": "2025-03-02T12:00:00Z"
+    }
+  ],
+  "tags": [
+    {
+      "id": 401,
+      "task_id": 301,
+      "content": "Urgent",
+      "color": "#fff"
+    },
+    {
+      "id": 402,
+      "task_id": 302,
+      "content": "Research",
+      "color": "#0f0"
+    },
+    {
+      "id": 403,
+      "task_id": 303,
+      "content": "Setup",
+      "color": "#00f"
+    }
+  ]
+}
