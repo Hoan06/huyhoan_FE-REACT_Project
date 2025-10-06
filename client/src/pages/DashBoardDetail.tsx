@@ -88,6 +88,10 @@ export default function DashBoardDetail() {
     navigate("/dashboard");
   };
 
+  const handleChangeCloseBoard = () => {
+    navigate("/dashboard", { state: { showClosedBoards: true } });
+  };
+
   const handleCloseBoard = () => {
     Swal.fire({
       title: "Are you sure?",
@@ -162,7 +166,10 @@ export default function DashBoardDetail() {
               <img className="icons" src={iconStarsBoard} alt="" />
               <span className="textIcons">Starred Boards</span>
             </div>
-            <div className="closeBoards typeSidebar">
+            <div
+              className="closeBoards typeSidebar"
+              onClick={handleChangeCloseBoard}
+            >
               <img className="icons" src={iconCloseBoard} alt="" />
               <span className="textIcons">Closed Boards</span>
             </div>

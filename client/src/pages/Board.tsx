@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../styles/Board.css";
 import iconBoard from "../assets/icons/Icon_board.png";
 import iconStarsBoard from "../assets/icons/Icon_stars_board.png";
@@ -20,6 +20,7 @@ import board1Starred from "../assets/images/board1-starred.jpg";
 import board2Starred from "../assets/images/board2-starred.jpg";
 import HeaderMain from "../components/HeaderMain";
 import { CloseCircleOutlined } from "@ant-design/icons";
+import { useLocation } from "react-router-dom";
 
 export default function Board() {
   const [showModal, setShowModal] = useState(false);
@@ -34,6 +35,14 @@ export default function Board() {
     { img: board3, title: "Board Title 03" },
     { img: board4, title: "Board Title 04" },
   ];
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.showClosedBoards) {
+      setShowClosedBoards(true);
+    }
+  }, [location.state]);
 
   return (
     <>
