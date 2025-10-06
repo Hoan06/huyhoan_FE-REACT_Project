@@ -26,6 +26,9 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import { MinusOutlined } from "@ant-design/icons";
+import { Button, Calendar, Checkbox, DatePicker, Input, Modal } from "antd";
+import type { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
@@ -50,6 +53,13 @@ export default function DashBoardDetail() {
 
   // modal move card
   const [showMoveModal, setShowMoveModal] = useState(false);
+
+  // modal date detail
+  const [open, setOpen] = useState(false);
+  const [startDate, setStartDate] = useState(dayjs());
+  const [dueDate, setDueDate] = useState<Dayjs | null>(null);
+  const [enableDue, setEnableDue] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState(dayjs());
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -475,7 +485,7 @@ export default function DashBoardDetail() {
                   <img src={iconNoLabel} alt="" />
                   <span>Labels</span>
                 </div>
-                <div className="sideButton">
+                <div className="sideButton" onClick={() => setOpen(true)}>
                   <img src={iconDateTime} alt="" />
                   <span>Dates</span>
                 </div>
@@ -539,6 +549,95 @@ export default function DashBoardDetail() {
           </div>
         </div>
       )}
+
+      {/* modal date*/}
+      <Modal
+        title="Dates"
+        open={open}
+        onCancel={() => setOpen(false)}
+        footer={null}
+        centered
+        width={360}
+        zIndex={3334}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 8,
+          }}
+        >
+          <Button
+            type="text"
+            onClick={() => setSelectedMonth(selectedMonth.subtract(1, "month"))}
+          >
+            ‹
+          </Button>
+          <span style={{ fontWeight: 600 }}>
+            {selectedMonth.format("MMMM YYYY")}
+          </span>
+          <Button
+            type="text"
+            onClick={() => setSelectedMonth(selectedMonth.add(1, "month"))}
+          >
+            ›
+          </Button>
+        </div>
+
+        {/* Calendar */}
+        <Calendar
+          fullscreen={false}
+          value={selectedMonth}
+          onSelect={(date) => {
+            if (!enableDue) setStartDate(date);
+            else setDueDate(date);
+          }}
+          headerRender={() => null}
+        />
+
+        {enableDue && (
+          <div
+            style={{ display: "flex", justifyContent: "center", marginTop: 8 }}
+          >
+            <DatePicker
+              showTime
+              value={dueDate}
+              format="DD/MM/YYYY HH:mm"
+              onChange={(val) => setDueDate(val)}
+            />
+          </div>
+        )}
+
+        {/* Start Date */}
+        <div style={{ marginTop: 16, display: "flex", alignItems: "center" }}>
+          <Checkbox checked disabled />
+          <Input
+            value={startDate ? startDate.format("DD/MM/YYYY") : ""}
+            readOnly
+            style={{ width: 200, marginLeft: 8 }}
+          />
+        </div>
+
+        <div style={{ marginTop: 16, display: "flex", alignItems: "center" }}>
+          <Checkbox
+            checked={enableDue}
+            onChange={(e) => setEnableDue(e.target.checked)}
+          />
+          <Input
+            value={dueDate ? dueDate.format("DD/MM/YYYY HH:mm") : ""}
+            readOnly
+            style={{ width: 200, marginLeft: 8 }}
+          />
+        </div>
+
+        <div style={{ marginTop: 24, textAlign: "center" }}>
+          <Button type="primary" style={{ marginRight: 8 }}>
+            Save
+          </Button>
+          <Button danger>Remove</Button>
+        </div>
+      </Modal>
     </>
   );
 }
