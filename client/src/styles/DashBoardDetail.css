@@ -1536,3 +1536,248 @@ html, body {
   background: rgba(9, 30, 66, 0.08);
 }
 
+
+/* modal detail */
+/* Modal overlay (nền xám mờ) */
+.overlayModalDetail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+}
+
+/* Modal container */
+.modalDetail {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  width: 720px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  padding: 24px;
+  z-index: 3333;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Header */
+.headerModalDetail {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.block1ModalDetail {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.block1ModalDetail input.titleInput {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.titleBoardDetail {
+  font-size: 20px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.block2ModalDetail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.selectModalDetail {
+  background: #f4f5f7;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  text-transform: uppercase;
+}
+
+/* Main content layout */
+.mainModalDetail {
+  display: flex;
+  gap: 24px;
+}
+
+/* Left side */
+.block1MainDetail {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.descriptionHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.textDescription {
+  font-size: 16px;
+  font-weight: 600;
+  color: #172b4d;
+}
+
+.textareaDetail {
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  min-height: 200px;
+  padding: 8px;
+  background: #fff;
+}
+
+.textareaDetail textarea {
+  width: 100%;
+  height: 180px;
+  border: none;
+  outline: none;
+  resize: none;
+  font-size: 14px;
+  color: #172b4d;
+}
+
+/* Action buttons */
+.actionModalDetail {
+  display: flex;
+  gap: 12px;
+}
+
+.saveDetail {
+  background: #0c66e4;
+  color: #fff;
+  border: none;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.saveDetail:hover {
+  background: #0b57c1;
+}
+
+.cancelDetail {
+  background: transparent;
+  color: #5e6c84;
+  border: none;
+  cursor: pointer;
+}
+
+.cancelDetail:hover {
+  color: #172b4d;
+}
+
+/* Right side */
+.block2MainDetail {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.labelEdit,
+.dateEdit,
+.deleteTask {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f4f5f7;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.textInfoDetail {
+  font-size: 14px;
+  font-weight: 500;
+  color: #172b4d;
+}
+
+.deleteTask {
+  background: #c9372c;
+  color: #fff;
+}
+
+.deleteTask:hover {
+  background: #a52a1f;
+}
+
+.sideButtonDelete {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #C9372C;
+  color: white;
+}
+
+.sideButtonDelete span {
+  margin-left: 3px;
+}
+
+.iconTickerImg {
+  width: 18px;
+  height: 18px;
+}
+
+.titleText {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.titleInput {
+  font-size: 18px;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 4px;
+}
+
+
+.editorContainer {
+  margin-top: 16px;
+}
+
+.block2MainDetail {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sideButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f4f5f7;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.sideButton img {
+  width: 22px;
+}

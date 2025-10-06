@@ -11,7 +11,9 @@ import iconTable from "../assets/icons/icon_table.png";
 import iconCloseDetail from "../assets/icons/icon_close_title.png";
 import iconFilter from "../assets/icons/icon_filter.png";
 import iconTickerSuccess from "../assets/icons/icon_tickerSuccess.png";
+import iconTickerFalse from "../assets/icons/icon_ticker_false.png";
 import iconDate from "../assets/icons/icon_date_filter.png";
+import iconDateTime from "../assets/icons/icon_date_time.png";
 import iconOverdue from "../assets/icons/icon_overdue_filter.png";
 import iconDueDay from "../assets/icons/icon_dueDay_filter.png";
 import iconNoLabel from "../assets/icons/icon_noLabels.png";
@@ -20,7 +22,10 @@ import iconCloseFilter from "../assets/icons/icon_close_filter.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
 import Swal from "sweetalert2";
+
 import { useNavigate } from "react-router-dom";
+import MDEditor from "@uiw/react-md-editor";
+import { MinusOutlined } from "@ant-design/icons";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
@@ -35,6 +40,17 @@ export default function DashBoardDetail() {
   // phần này của chỉnh tên
   const [editingListTitle, setEditingListTitle] = useState(false);
   const [listTitle, setListTitle] = useState("Todo");
+
+  // phần modal detail
+  const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState("demo");
+  const [value, setValue] = useState<string | undefined>("");
+  const [isTitleEditable, setIsTitleEditable] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
 
   // chuyển trang
   const navigate = useNavigate();
@@ -179,7 +195,9 @@ export default function DashBoardDetail() {
                   />
                   Thuê DJ
                 </div>
-                <div className="card">Lên kịch bản chương trình</div>
+                <div className="card" onClick={() => setShowModal(true)}>
+                  Lên kịch bản chương trình
+                </div>
                 <div className="card">Chuẩn bị kịch</div>
                 <div className="card">Kịch bản</div>
                 <div className="card">Thuê MC</div>
@@ -367,6 +385,94 @@ export default function DashBoardDetail() {
                     src={iconSelectFilter}
                     alt="open"
                   />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {showModal && (
+        <div className="overlayModalDetail" onClick={handleCloseModal}>
+          <div className="modalDetail" onClick={(e) => e.stopPropagation()}>
+            {/* HEADER */}
+            <div className="headerModalDetail">
+              <div className="block1ModalDetail">
+                <span
+                  className="iconCircle"
+                  onClick={() => {
+                    setIsCompleted(!isCompleted);
+                    setIsTitleEditable(!isTitleEditable);
+                  }}
+                >
+                  <img
+                    src={isCompleted ? iconTickerSuccess : iconTickerFalse}
+                    alt={isCompleted ? "tích xanh" : "chưa tích"}
+                    className="iconTickerImg"
+                  />
+                </span>
+
+                {/* Tiêu đề */}
+                {isTitleEditable ? (
+                  <input
+                    className="titleInput"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    autoFocus
+                  />
+                ) : (
+                  <span className="titleText">{title}</span>
+                )}
+              </div>
+
+              <div className="block2ModalDetail">
+                in list{" "}
+                <select
+                  style={{ backgroundColor: "#DCDFE4", borderRadius: "6px" }}
+                  name=""
+                  id=""
+                >
+                  <option value="">demo</option>
+                </select>
+              </div>
+            </div>
+
+            {/* MAIN */}
+            <div className="mainModalDetail">
+              <div className="block1MainDetail">
+                <div className="descriptionHeader">
+                  <i className="fa fa-align-left"></i>
+                  <span className="textDescription">Description</span>
+                </div>
+
+                <div className="editorContainer" data-color-mode="light">
+                  <MDEditor
+                    value={value}
+                    onChange={setValue}
+                    height={250}
+                    preview="edit"
+                  />
+                </div>
+
+                <div className="actionModalDetail">
+                  <button className="saveDetail">Save</button>
+                  <button className="cancelDetail" onClick={handleCloseModal}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
+
+              <div className="block2MainDetail">
+                <div className="sideButton">
+                  <img src={iconNoLabel} alt="" />
+                  <span>Labels</span>
+                </div>
+                <div className="sideButton">
+                  <img src={iconDateTime} alt="" />
+                  <span>Dates</span>
+                </div>
+                <div className="sideButtonDelete">
+                  <MinusOutlined />
+                  <span>Delete</span>
                 </div>
               </div>
             </div>
