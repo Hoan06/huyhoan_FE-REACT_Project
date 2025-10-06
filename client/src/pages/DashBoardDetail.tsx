@@ -13,9 +13,27 @@ import iconFilter from "../assets/icons/icon_filter.png";
 import iconTickerSuccess from "../assets/icons/icon_tickerSuccess.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
+import Swal from "sweetalert2";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
+
+  const handleCloseBoard = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, close it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Closed!", "Your board has been closed.", "success");
+      }
+    });
+  };
 
   return (
     <>
@@ -96,7 +114,8 @@ export default function DashBoardDetail() {
                 <img className="iconTableBoard" src={iconTable} alt="" />
                 <span className="textTable">Table</span>
               </div>
-              <div className="btncloseBoard">
+
+              <div className="btncloseBoard" onClick={handleCloseBoard}>
                 <img src={iconCloseDetail} alt="" />
                 <span className="textCloseBoard">Close this board</span>
               </div>
@@ -127,12 +146,6 @@ export default function DashBoardDetail() {
                 <div className="card">Thuê MC</div>
                 <div className="addCard">+ Add a card</div>
               </div>
-
-              {/* In-progress */}
-              {/* <div className="list">
-                <div className="listHeader">In-progress</div>
-                <div className="addCard">+ Add a card</div>
-              </div> */}
 
               {/* Add another list */}
               <div className="list addList">+ Add another list</div>

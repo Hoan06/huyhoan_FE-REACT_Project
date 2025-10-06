@@ -19,12 +19,14 @@ import board4 from "../assets/images/board4.jpg";
 import board1Starred from "../assets/images/board1-starred.jpg";
 import board2Starred from "../assets/images/board2-starred.jpg";
 import HeaderMain from "../components/HeaderMain";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 export default function Board() {
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [hoveredBoard, setHoveredBoard] = useState<number | null>(null);
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
+  const [showClosedBoards, setShowClosedBoards] = useState(false); // ✅ thêm state
 
   const boards = [
     { img: board1, title: "Board Title 01" },
@@ -35,7 +37,9 @@ export default function Board() {
 
   return (
     <>
+      {/* Header */}
       <HeaderMain onOpenSidebar={() => setShowSidebarMobile(true)}></HeaderMain>
+
       <div className="containerDashboard">
         {/* Overlay cho sidebar mobile */}
         <div
@@ -44,6 +48,7 @@ export default function Board() {
           }`}
           onClick={() => setShowSidebarMobile(false)}
         ></div>
+
         {/* Sidebar desktop & mobile */}
         <div
           className={`sidebar ${
@@ -54,22 +59,33 @@ export default function Board() {
           <div className="headerSidebarMedia">
             <img className="logoTrello" src={logoTrelloFull} alt="" />
           </div>
+
           <span className="headingSidebar">YOUR WORKSPACES</span>
           <div className="listNavbar">
-            <div className="boardsSidebar typeSidebar">
+            <div
+              className="boardsSidebar typeSidebar"
+              onClick={() => setShowClosedBoards(false)}
+            >
               <img className="icons" src={iconBoard} alt="" />
               <span className="textIcons">Boards</span>
             </div>
+
             <div className="starredBoards typeSidebar">
               <img className="icons" src={iconStarsBoard} alt="" />
               <span className="textIcons">Starred Boards</span>
             </div>
-            <div className="closeBoards typeSidebar">
+
+            <div
+              className="closeBoards typeSidebar"
+              onClick={() => setShowClosedBoards(true)}
+            >
               <img className="icons" src={iconCloseBoard} alt="" />
               <span className="textIcons">Closed Boards</span>
             </div>
           </div>
+
           <div className="lineSidebar"></div>
+
           <div className="listNavbar">
             <div className="settingSidebar typeSidebar">
               <img className="icons" src={iconSetting} alt="" />
@@ -81,92 +97,128 @@ export default function Board() {
             </div>
           </div>
         </div>
+
+        {/* Nội dung chính */}
         <div className="contentDashboard">
-          <div className="headerContent">
-            <div className="block1">
-              <img className="listContentIcon" src={iconWorkspaces} alt="" />
-              <h1 className="textList">Your Workspaces</h1>
-            </div>
-            <div className="block2">
-              <div className="actionContent">
-                <div className="shareAction actionInfo">Share</div>
-                <div className="exportAction actionInfo">Export</div>
-              </div>
-              <div className="filterTime">
-                <img className="calendarIcon" src={iconSchedule} alt="" />
-                <select className="selectCalendar" name="" id="">
-                  <option className="optionCalendar" value="week">
-                    This week
-                  </option>
-                  <option className="optionCalendar" value="month">
-                    This month
-                  </option>
-                  <option className="optionCalendar" value="year">
-                    This year
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="listBoards">
-            {boards.map((board, idx) => (
-              <div
-                className="boardInfo"
-                key={idx}
-                onMouseEnter={() => setHoveredBoard(idx)}
-                onMouseLeave={() => setHoveredBoard(null)}
-                style={{ position: "relative" }}
-              >
-                <img className="backgroundBoard" src={board.img} alt="" />
-                <div className="overlay"></div>
-                <span className="titleBoard">{board.title}</span>
-                {hoveredBoard === idx && (
-                  <div
-                    onClick={() => setShowModalUpdate(true)}
-                    className="editBoard"
-                    style={{ display: "flex" }}
-                  >
-                    <img src={iconEditBoard} alt="" />
-                    <span className="textEdit">Edit this board</span>
+          {!showClosedBoards ? (
+            <>
+              {/* --- Your Workspaces + Starred Boards --- */}
+              <div className="headerContent">
+                <div className="block1">
+                  <img
+                    className="listContentIcon"
+                    src={iconWorkspaces}
+                    alt=""
+                  />
+                  <h1 className="textList">Your Workspaces</h1>
+                </div>
+                <div className="block2">
+                  <div className="actionContent">
+                    <div className="shareAction actionInfo">Share</div>
+                    <div className="exportAction actionInfo">Export</div>
                   </div>
-                )}
+                  <div className="filterTime">
+                    <img className="calendarIcon" src={iconSchedule} alt="" />
+                    <select className="selectCalendar" name="" id="">
+                      <option className="optionCalendar" value="week">
+                        This week
+                      </option>
+                      <option className="optionCalendar" value="month">
+                        This month
+                      </option>
+                      <option className="optionCalendar" value="year">
+                        This year
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
-            ))}
-            <div className="createBoard">
-              <button
-                className="btnCreateBoard"
-                onClick={() => setShowModal(true)}
-              >
-                Create new board
-              </button>
-            </div>
-          </div>
-          <div className="headerStarred">
-            <div className="textHeaderStarred">
-              <img className="listContentIcon" src={iconStars} alt="" />
-              <h1 className="textList textListStarred">Starred Boards</h1>
-            </div>
-          </div>
-          <div className="listStarred">
-            <div className="boardInfoStarred">
-              <img
-                className="backgroundBoardStarred"
-                src={board1Starred}
-                alt=""
-              />
-              <div className="overlay"></div>
-              <span className="titleBoardStarred">Important Board 01</span>
-            </div>
-            <div className="boardInfoStarred">
-              <img
-                className="backgroundBoardStarred"
-                src={board2Starred}
-                alt=""
-              />
-              <div className="overlay"></div>
-              <span className="titleBoardStarred">Important Board 02</span>
-            </div>
-          </div>
+
+              <div className="listBoards">
+                {boards.map((board, idx) => (
+                  <div
+                    className="boardInfo"
+                    key={idx}
+                    onMouseEnter={() => setHoveredBoard(idx)}
+                    onMouseLeave={() => setHoveredBoard(null)}
+                    style={{ position: "relative" }}
+                  >
+                    <img className="backgroundBoard" src={board.img} alt="" />
+                    <div className="overlay"></div>
+                    <span className="titleBoard">{board.title}</span>
+                    {hoveredBoard === idx && (
+                      <div
+                        onClick={() => setShowModalUpdate(true)}
+                        className="editBoard"
+                        style={{ display: "flex" }}
+                      >
+                        <img src={iconEditBoard} alt="" />
+                        <span className="textEdit">Edit this board</span>
+                      </div>
+                    )}
+                  </div>
+                ))}
+                <div className="createBoard">
+                  <button
+                    className="btnCreateBoard"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Create new board
+                  </button>
+                </div>
+              </div>
+
+              <div className="headerStarred">
+                <div className="textHeaderStarred">
+                  <img className="listContentIcon" src={iconStars} alt="" />
+                  <h1 className="textList textListStarred">Starred Boards</h1>
+                </div>
+              </div>
+
+              <div className="listStarred">
+                <div className="boardInfoStarred">
+                  <img
+                    className="backgroundBoardStarred"
+                    src={board1Starred}
+                    alt=""
+                  />
+                  <div className="overlay"></div>
+                  <span className="titleBoardStarred">Important Board 01</span>
+                </div>
+                <div className="boardInfoStarred">
+                  <img
+                    className="backgroundBoardStarred"
+                    src={board2Starred}
+                    alt=""
+                  />
+                  <div className="overlay"></div>
+                  <span className="titleBoardStarred">Important Board 02</span>
+                </div>
+              </div>
+            </>
+          ) : (
+            <>
+              {/* --- Closed Boards --- */}
+              <div className="headerClosed">
+                <div className="textHeaderClosed">
+                  <CloseCircleOutlined className="listContentIcon" />
+                  <h1 className="textList textListClosed">Closed Boards</h1>
+                </div>
+              </div>
+              <div className="listClosed">
+                <div className="boardInfoClosed">
+                  <img className="backgroundBoardClosed" src={board1} alt="" />
+                  <div className="overlay"></div>
+                  <span className="titleBoardClosed">Important Board 01</span>
+                </div>
+                <div className="boardInfoClosed">
+                  <img className="backgroundBoardClosed" src={board2} alt="" />
+                  <div className="overlay"></div>
+                  <span className="titleBoardClosed">Important Board 02</span>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
@@ -353,17 +405,6 @@ export default function Board() {
                 <p className="noticeTitle">
                   👋 Please provide a valid board title.
                 </p>
-              </div>
-            </div>
-            <div className="footerModalCreate">
-              <div className="selectButtonCreate">
-                <button
-                  className="closeModalCreateFooter"
-                  onClick={() => setShowModalUpdate(false)}
-                >
-                  Close
-                </button>
-                <button className="createNewBoard">Update</button>
               </div>
             </div>
           </div>
