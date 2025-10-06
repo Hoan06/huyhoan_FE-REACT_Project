@@ -26,7 +26,7 @@ export default function Board() {
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [hoveredBoard, setHoveredBoard] = useState<number | null>(null);
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
-  const [showClosedBoards, setShowClosedBoards] = useState(false); // ✅ thêm state
+  const [showClosedBoards, setShowClosedBoards] = useState(false);
 
   const boards = [
     { img: board1, title: "Board Title 01" },
@@ -41,7 +41,6 @@ export default function Board() {
       <HeaderMain onOpenSidebar={() => setShowSidebarMobile(true)}></HeaderMain>
 
       <div className="containerDashboard">
-        {/* Overlay cho sidebar mobile */}
         <div
           className={`overlaySidebar ${
             showSidebarMobile ? "showOverlaySidebar" : ""
@@ -49,13 +48,11 @@ export default function Board() {
           onClick={() => setShowSidebarMobile(false)}
         ></div>
 
-        {/* Sidebar desktop & mobile */}
         <div
           className={`sidebar ${
             showSidebarMobile ? "displaySidebarMobile" : ""
           }`}
         >
-          {/* Sidebar mobile header */}
           <div className="headerSidebarMedia">
             <img className="logoTrello" src={logoTrelloFull} alt="" />
           </div>

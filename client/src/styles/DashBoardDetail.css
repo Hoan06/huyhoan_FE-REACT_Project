@@ -1267,3 +1267,272 @@ html, body {
   text-overflow: ellipsis;
   padding-right: 30%;
 }
+
+
+/* modal filter */
+.overlayModalFilter {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.28); 
+  z-index: 2500;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: flex-start;    
+  padding-top: 72px; 
+  overflow: hidden;
+}
+
+.modalFilter {
+  width: 380px;              
+  max-height: calc(100vh - 120px);
+  margin-right: 24px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+  z-index: 2600;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: modalSlideIn 180ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* header modal */
+.headerModalFilter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid #eef0f3;
+  background: transparent;
+}
+
+.textHeaderFilter {
+  color: #45546b;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* close button */
+.btnCloseFilter img {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  opacity: 0.8;
+  border-radius: 50%;
+}
+
+/* content */
+.mainModalFilter {
+  padding: 16px 18px;
+  overflow-y: auto;
+  font-family: inherit;
+}
+
+/* input */
+.inputSearch {
+  width: 100%;
+  height: 40px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #d6dbe3;
+  background: #fff;
+  font-size: 14px;
+  outline: none;
+}
+
+.inputSearch:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 4px rgba(47,128,237,0.08);
+}
+
+/* text và headings */
+.textFilter {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e4053;
+  margin-bottom: 8px;
+}
+
+/* nhỏ mô tả */
+.searchCard {
+  color: #6b778c;
+  font-size: 12px;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+/* checkbox row */
+.completeStatus,
+.blockDueDate,
+.blockLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.checkboxFilter {
+  width: 16px;
+  height: 16px;
+  accent-color: #2f80ed;
+  cursor: pointer;
+}
+
+/* icons trong dòng */
+.iconNoDate, .iconClock, .iconNoLabel, .iconOpenFilter {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+
+/* labels demo */
+.labelColor {
+  height: 28px;
+  border-radius: 6px;
+  margin: 6px 0;
+  box-shadow: inset 0 -2px 0 rgba(0,0,0,0.03);
+}
+.labelColor.green { background: #4fcf9b;  width: 300px;}
+.labelColor.yellow { background: #f7d154; width: 300px;}
+.labelColor.orange { background: #ffad7f; width: 300px;}
+
+/* select label row */
+.selectLabel {
+  display: flex;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px solid #eef0f3;
+  margin-top: 12px;
+}
+
+.selectInputLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.textSelectFilter {
+  margin-right: auto;
+}
+
+/* animation */
+@keyframes modalSlideIn {
+  from { transform: translateY(-6px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* responsive */
+@media (max-width: 480px) {
+  .overlayModalFilter { padding-top: 60px; }
+  .modalFilter { width: calc(100% - 32px); margin-right: 16px; border-radius: 8px; }
+}
+
+
+/* css card */
+.addCardForm {
+  background: #ebecf0;
+  padding: 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.inputAddCard {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.actionsAddCard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnAddCard {
+  background: #0079bf;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btnAddCard:hover {
+  background: #026aa7;
+}
+
+.btnCancelAddCard {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.formAddList {
+  background: #ebecf0;
+  padding: 6px;
+  border-radius: 4px;
+  width: 272px;
+}
+
+.inputAddList {
+  width: 100%;
+  padding: 6px 8px;
+  font-size: 14px;
+  border: 1px solid #dfe1e6;
+  border-radius: 4px;
+  outline: none;
+  margin-bottom: 8px;
+}
+
+.actionsAddList {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btnAddList {
+  background: #0079bf;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btnAddList:hover {
+  background: #026aa7;
+}
+
+.btnCancelAddList {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #555;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.addCard,
+.list.addList {
+  padding: 6px 8px;
+  color: #5e6c84;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.addCard:hover,
+.list.addList:hover {
+  background: rgba(9, 30, 66, 0.08);
+}
+

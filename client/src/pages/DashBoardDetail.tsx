@@ -11,12 +11,37 @@ import iconTable from "../assets/icons/icon_table.png";
 import iconCloseDetail from "../assets/icons/icon_close_title.png";
 import iconFilter from "../assets/icons/icon_filter.png";
 import iconTickerSuccess from "../assets/icons/icon_tickerSuccess.png";
+import iconDate from "../assets/icons/icon_date_filter.png";
+import iconOverdue from "../assets/icons/icon_overdue_filter.png";
+import iconDueDay from "../assets/icons/icon_dueDay_filter.png";
+import iconNoLabel from "../assets/icons/icon_noLabels.png";
+import iconSelectFilter from "../assets/icons/icon_select_filter.png";
+import iconCloseFilter from "../assets/icons/icon_close_filter.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
 import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
+  const [showFilter, setShowFilter] = useState(false);
+
+  const [addingCard, setAddingCard] = useState(false);
+  const [newCardTitle, setNewCardTitle] = useState("");
+
+  const [addingList, setAddingList] = useState(false);
+  const [newListTitle, setNewListTitle] = useState("");
+
+  // phần này của chỉnh tên
+  const [editingListTitle, setEditingListTitle] = useState(false);
+  const [listTitle, setListTitle] = useState("Todo");
+
+  // chuyển trang
+  const navigate = useNavigate();
+
+  const handleChangePage = () => {
+    navigate("/dashboard");
+  };
 
   const handleCloseBoard = () => {
     Swal.fire({
@@ -37,11 +62,9 @@ export default function DashBoardDetail() {
 
   return (
     <>
-      {/* Header */}
-      <HeaderMain onOpenSidebar={() => setShowSidebarMobile(true)}></HeaderMain>
+      <HeaderMain onOpenSidebar={() => setShowSidebarMobile(true)} />
 
       <div className="containerDashboard">
-        {/* Overlay mobile */}
         <div
           className={`overlaySidebar ${
             showSidebarMobile ? "showOverlaySidebar" : ""
@@ -49,7 +72,6 @@ export default function DashBoardDetail() {
           onClick={() => setShowSidebarMobile(false)}
         ></div>
 
-        {/* Sidebar */}
         <div
           className={`sidebar ${
             showSidebarMobile ? "displaySidebarMobile" : ""
@@ -60,7 +82,10 @@ export default function DashBoardDetail() {
           </div>
           <span className="headingSidebar">YOUR WORKSPACES</span>
           <div className="listNavbar">
-            <div className="boardsSidebar typeSidebar">
+            <div
+              className="boardsSidebar typeSidebar"
+              onClick={handleChangePage}
+            >
               <img className="icons" src={iconBoard} alt="" />
               <span className="textIcons">Boards</span>
             </div>
@@ -93,7 +118,6 @@ export default function DashBoardDetail() {
         </div>
 
         <div className="contentDashboard">
-          {/* Header của content */}
           <div className="headerBoard">
             <div className="block1">
               <h2 className="textInfoBoard">
@@ -120,18 +144,33 @@ export default function DashBoardDetail() {
                 <span className="textCloseBoard">Close this board</span>
               </div>
             </div>
-            <div className="block2">
+            <div className="block2" onClick={() => setShowFilter(true)}>
               <img className="iconFilter" src={iconFilter} alt="" />
               <span className="textFilterBlock2">Filter</span>
             </div>
           </div>
 
-          {/* Các list */}
           <div className="mainContent">
             <div className="listsContainer">
-              {/* Todo */}
               <div className="list">
-                <div className="listHeader">Todo</div>
+                <div className="listHeader">
+                  {editingListTitle ? (
+                    <input
+                      type="text"
+                      className="inputEditListTitle"
+                      value={listTitle}
+                      placeholder={listTitle}
+                      onChange={(e) => setListTitle(e.target.value)}
+                      onBlur={() => setEditingListTitle(false)}
+                      autoFocus
+                    />
+                  ) : (
+                    <span onClick={() => setEditingListTitle(true)}>
+                      {listTitle}
+                    </span>
+                  )}
+                </div>
+
                 <div className="card">
                   <img
                     className="tickerCardSuccess"
@@ -144,15 +183,196 @@ export default function DashBoardDetail() {
                 <div className="card">Chuẩn bị kịch</div>
                 <div className="card">Kịch bản</div>
                 <div className="card">Thuê MC</div>
-                <div className="addCard">+ Add a card</div>
+
+                {addingCard ? (
+                  <div className="addCardForm">
+                    <input
+                      type="text"
+                      placeholder="Enter a title or paste a link"
+                      value={newCardTitle}
+                      onChange={(e) => setNewCardTitle(e.target.value)}
+                      className="inputAddCard"
+                    />
+                    <div className="actionsAddCard">
+                      <button
+                        className="btnAddCard"
+                        onClick={() => {
+                          console.log("New card:", newCardTitle);
+                          setNewCardTitle("");
+                          setAddingCard(false);
+                        }}
+                      >
+                        Add card
+                      </button>
+                      <button
+                        className="btnCancelAddCard"
+                        onClick={() => setAddingCard(false)}
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="addCard" onClick={() => setAddingCard(true)}>
+                    + Add a card
+                  </div>
+                )}
               </div>
 
-              {/* Add another list */}
-              <div className="list addList">+ Add another list</div>
+              {addingList ? (
+                <div className="formAddList">
+                  <input
+                    type="text"
+                    placeholder="Enter list name..."
+                    value={newListTitle}
+                    onChange={(e) => setNewListTitle(e.target.value)}
+                    className="inputAddList"
+                  />
+                  <div className="actionsAddList">
+                    <button
+                      className="btnAddList"
+                      onClick={() => {
+                        console.log("New list:", newListTitle);
+                        setNewListTitle("");
+                        setAddingList(false);
+                      }}
+                    >
+                      Add list
+                    </button>
+                    <button
+                      className="btnCancelAddList"
+                      onClick={() => setAddingList(false)}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  className="list addList"
+                  onClick={() => setAddingList(true)}
+                >
+                  + Add another list
+                </div>
+              )}
             </div>
           </div>
         </div>
       </div>
+
+      {showFilter && (
+        <div
+          className="overlayModalFilter"
+          onClick={() => setShowFilter(false)}
+        >
+          <div className="modalFilter" onClick={(e) => e.stopPropagation()}>
+            <div className="headerModalFilter">
+              <span className="textHeaderFilter">Filter</span>
+              <span
+                className="btnCloseFilter"
+                role="button"
+                onClick={() => setShowFilter(false)}
+              >
+                <img src={iconCloseFilter} alt="close filter" />
+              </span>
+            </div>
+
+            <div className="mainModalFilter">
+              <div className="filterKeyword">
+                <h3 className="textFilter">Keyword</h3>
+                <input
+                  className="inputSearch"
+                  type="text"
+                  placeholder="Enter a keyword…"
+                />
+                <p className="searchCard">Search cards,</p>
+              </div>
+
+              <div className="filterStatus">
+                <h3 className="textFilter">Card status</h3>
+                <div className="completeStatus">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="textFilterDetail">Marked as complete</span>
+                </div>
+                <div className="completeStatus">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="textFilterDetail">
+                    Not marked as complete
+                  </span>
+                </div>
+              </div>
+
+              <div className="blockDueDateMain">
+                <h3 className="textFilter">Due date</h3>
+                <div className="noDate blockDueDate">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="blockNoDate">
+                    <img className="iconNoDate" src={iconDate} alt="no date" />
+                  </span>
+                  <span className="textFilterNo">No dates</span>
+                </div>
+                <div className="blockDueDate">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="blockOverDue">
+                    <img
+                      className="iconClock"
+                      src={iconOverdue}
+                      alt="overdue"
+                    />
+                  </span>
+                  <span className="textFilterDetail">Overdue</span>
+                </div>
+                <div className="blockDueDate">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="blockDueNext">
+                    <img
+                      className="iconClock"
+                      src={iconDueDay}
+                      alt="due next day"
+                    />
+                  </span>
+                  <span className="textFilterDetail">Due in the next day</span>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="textFilter textLabels">Labels</h3>
+                <div className="labelsContainer">
+                  <div className="blockLabel blockNoLabelMain">
+                    <input className="checkboxFilter" type="checkbox" />
+                    <span className="blockNoLabel">
+                      <img className="iconNoLabel" src={iconNoLabel} alt="" />
+                    </span>
+                    <span className="textFilterNo">No labels</span>
+                  </div>
+                  <div className="selectInputLabel">
+                    <input className="checkboxFilter" type="checkbox" />
+                    <div className="labelColor green" />
+                  </div>
+                  <div className="selectInputLabel">
+                    <input className="checkboxFilter" type="checkbox" />
+                    <div className="labelColor yellow" />
+                  </div>
+                  <div className="selectInputLabel">
+                    <input className="checkboxFilter" type="checkbox" />
+                    <div className="labelColor orange" />
+                  </div>
+                </div>
+
+                <div className="selectLabel blockLabel">
+                  <input className="checkboxFilter" type="checkbox" />
+                  <span className="textSelectFilter">Select labels</span>
+                  <img
+                    className="iconOpenFilter"
+                    src={iconSelectFilter}
+                    alt="open"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
