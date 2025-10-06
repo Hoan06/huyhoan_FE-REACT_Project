@@ -48,6 +48,9 @@ export default function DashBoardDetail() {
   const [isTitleEditable, setIsTitleEditable] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
+  // modal move card
+  const [showMoveModal, setShowMoveModal] = useState(false);
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -426,13 +429,19 @@ export default function DashBoardDetail() {
 
               <div className="block2ModalDetail">
                 in list{" "}
-                <select
-                  style={{ backgroundColor: "#DCDFE4", borderRadius: "6px" }}
-                  name=""
-                  id=""
+                <div
+                  style={{
+                    backgroundColor: "#DCDFE4",
+                    borderRadius: "6px",
+                    width: "100px",
+                    paddingLeft: "5px",
+                  }}
+                  onClick={() => setShowMoveModal(true)}
                 >
-                  <option value="">demo</option>
-                </select>
+                  <div className="titleListDetail">
+                    demo <img src={iconSelectFilter} alt="" />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -475,6 +484,57 @@ export default function DashBoardDetail() {
                   <span>Delete</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* modal card move */}
+      {showMoveModal && (
+        <div
+          className="overlayMoveCard"
+          onClick={() => setShowMoveModal(false)}
+        >
+          <div className="modalMoveCard" onClick={(e) => e.stopPropagation()}>
+            <div className="headerMoveCard">
+              <h3>Move card</h3>
+              <span
+                className="closeBtn"
+                onClick={() => setShowMoveModal(false)}
+              >
+                ✕
+              </span>
+            </div>
+
+            <p className="subTitle">Select destination</p>
+
+            <div className="formGroup">
+              <label>Board</label>
+              <input
+                type="text"
+                value="Tổ chức sự kiện Year-end party !"
+                readOnly
+                className="inputMove"
+              />
+            </div>
+
+            <div className="rowGroup">
+              <div className="formGroup half">
+                <label>List</label>
+                <select className="inputMove">
+                  <option>In-progress</option>
+                </select>
+              </div>
+              <div className="formGroup half">
+                <label>Position</label>
+                <select className="inputMove">
+                  <option>1</option>
+                </select>
+              </div>
+            </div>
+
+            <div className="footerMoveCard">
+              <button className="btnMove">Move</button>
             </div>
           </div>
         </div>
