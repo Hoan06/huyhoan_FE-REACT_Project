@@ -19,6 +19,7 @@ import iconDueDay from "../assets/icons/icon_dueDay_filter.png";
 import iconNoLabel from "../assets/icons/icon_noLabels.png";
 import iconSelectFilter from "../assets/icons/icon_select_filter.png";
 import iconCloseFilter from "../assets/icons/icon_close_filter.png";
+import iconSelect from "../assets/icons/icon_select.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
 import Swal from "sweetalert2";
@@ -61,6 +62,21 @@ export default function DashBoardDetail() {
   const [enableDue, setEnableDue] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(dayjs());
 
+  // modal labels
+  const [showLabelsModal, setShowLabelsModal] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [labels, setLabels] = useState([
+    { id: 1, name: "done", color: "#4BCE97" },
+    { id: 2, name: "urgent", color: "#FEA362" },
+    { id: 3, name: "todo", color: "#F87168" },
+    { id: 4, name: "in-progress", color: "#9F8FEF" },
+  ]);
+  // modal create labels
+  const [showCreateLabelModal, setShowCreateLabelModal] = useState(false);
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  // modal edit labels
+  const [showEditLabelModal, setShowEditLabelModal] = useState(false);
+
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -85,6 +101,30 @@ export default function DashBoardDetail() {
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire("Closed!", "Your board has been closed.", "success");
+      }
+    });
+  };
+
+  // xác nhận xóa card
+  const handleDeleteCard = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your card has been deleted.",
+          icon: "success",
+          confirmButtonColor: "#3085d6",
+        });
+        setShowModal(false);
       }
     });
   };
@@ -404,6 +444,8 @@ export default function DashBoardDetail() {
           </div>
         </div>
       )}
+
+      {/* modal detail */}
       {showModal && (
         <div className="overlayModalDetail" onClick={handleCloseModal}>
           <div className="modalDetail" onClick={(e) => e.stopPropagation()}>
@@ -481,7 +523,10 @@ export default function DashBoardDetail() {
               </div>
 
               <div className="block2MainDetail">
-                <div className="sideButton">
+                <div
+                  className="sideButton"
+                  onClick={() => setShowLabelsModal(true)}
+                >
                   <img src={iconNoLabel} alt="" />
                   <span>Labels</span>
                 </div>
@@ -489,7 +534,7 @@ export default function DashBoardDetail() {
                   <img src={iconDateTime} alt="" />
                   <span>Dates</span>
                 </div>
-                <div className="sideButtonDelete">
+                <div className="sideButtonDelete" onClick={handleDeleteCard}>
                   <MinusOutlined />
                   <span>Delete</span>
                 </div>
@@ -638,6 +683,187 @@ export default function DashBoardDetail() {
           <Button danger>Remove</Button>
         </div>
       </Modal>
+
+      {/* modal labels */}
+      {showLabelsModal && (
+        <div
+          className="overlayLabelsModal"
+          onClick={() => setShowLabelsModal(false)}
+        >
+          <div className="labelsModal" onClick={(e) => e.stopPropagation()}>
+            <div className="labelsHeader">
+              <span className="title">Labels</span>
+              <button
+                className="btnCloseLabels"
+                onClick={() => setShowLabelsModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="titleSonLabels">labels</div>
+
+            <div className="labelsList">
+              {labels.map((label) => (
+                <div key={label.id} className="labelItem">
+                  <input type="checkbox" className="labelCheckbox" />
+                  <div
+                    className="labelColorBox"
+                    style={{ backgroundColor: label.color }}
+                  >
+                    <span className="labelName">{label.name}</span>
+                  </div>
+
+                  <button
+                    className="editLabelBtn"
+                    onClick={() => setShowEditLabelModal(true)}
+                  >
+                    ✎
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            <button
+              className="createLabelBtn"
+              onClick={() => setShowCreateLabelModal(true)}
+            >
+              Create a new label
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* modal create labels */}
+      {showCreateLabelModal && (
+        <div
+          className="overlayCreateLabel"
+          onClick={() => setShowCreateLabelModal(false)}
+        >
+          <div
+            className="createLabelModal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="headerCreateLabel">
+              <h3 className="titleCreateLabel">Create label</h3>
+              <button
+                className="btnCloseCreateLabel"
+                onClick={() => setShowCreateLabelModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="bodyCreateLabel">
+              <label className="labelTitle">Title</label>
+              <input
+                type="text"
+                placeholder="Enter label name..."
+                className="inputCreateLabel"
+              />
+
+              <label className="labelColorTitle">Select a color</label>
+              <div className="colorGrid">
+                {[
+                  "#4BCE97",
+                  "#FEA362",
+                  "#F87168",
+                  "#9F8FEF",
+                  "#E2B203",
+                  "#FF8B00",
+                  "#FF5630",
+                  "#6554C0",
+                  "#C0B6F2",
+                  "#57D9A3",
+                ].map((color) => (
+                  <div
+                    key={color}
+                    className="colorOption"
+                    style={{ backgroundColor: color, position: "relative" }}
+                    onClick={() => setSelectedColor(color)}
+                  >
+                    {selectedColor === color && (
+                      <img
+                        src={iconSelect}
+                        alt="selected"
+                        className="iconSelectedColor"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+              <button className="btnCreateLabel">Create</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* modal edit labels */}
+      {showEditLabelModal && (
+        <div
+          className="overlayCreateLabel"
+          onClick={() => setShowEditLabelModal(false)}
+        >
+          <div
+            className="createLabelModal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="headerCreateLabel">
+              <h3 className="titleCreateLabel">Edit label</h3>
+              <button
+                className="btnCloseCreateLabel"
+                onClick={() => setShowEditLabelModal(false)}
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="bodyCreateLabel">
+              <label className="labelTitle">Title</label>
+              <input
+                type="text"
+                placeholder="Enter label name..."
+                className="inputCreateLabel"
+              />
+
+              <label className="labelColorTitle">Select a color</label>
+              <div className="colorGrid">
+                {[
+                  "#4BCE97",
+                  "#FEA362",
+                  "#F87168",
+                  "#9F8FEF",
+                  "#E2B203",
+                  "#FF8B00",
+                  "#FF5630",
+                  "#6554C0",
+                  "#C0B6F2",
+                  "#57D9A3",
+                ].map((color) => (
+                  <div
+                    key={color}
+                    className="colorOption"
+                    style={{ backgroundColor: color, position: "relative" }}
+                    onClick={() => setSelectedColor(color)}
+                  >
+                    {selectedColor === color && (
+                      <img
+                        src={iconSelect}
+                        alt="selected"
+                        className="iconSelectedColor"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="footerEditLabel">
+                <button className="btnSaveLabel">Save</button>
+                <button className="btnDeleteLabel">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

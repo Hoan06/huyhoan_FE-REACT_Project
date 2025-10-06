@@ -1787,6 +1787,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .titleListDetail img {
@@ -1874,4 +1875,251 @@ html, body {
   cursor: pointer;
 }
 
-/* modal date detail */
+/* modal labels */
+/* Overlay */
+.overlayLabelsModal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Modal */
+.labelsModal {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  width: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Header */
+.labelsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.labelsHeader .title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.btnCloseLabels {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Label list */
+.labelsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.labelItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.labelColorBox {
+  flex: 1;
+  height: 24px;
+  border-radius: 4px;
+}
+
+.labelName {
+  flex: 2;
+  font-size: 14px;
+  text-transform: lowercase;
+  padding-left: 10px;
+  color: #164B35;
+}
+
+.labelCheckbox {
+  cursor: pointer;
+}
+
+.editLabelBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Create button */
+.createLabelBtn {
+  width: 100%;
+  background: #f1f2f4;
+  border: none;
+  border-radius: 4px;
+  padding: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 8px;
+}
+.createLabelBtn:hover {
+  background: #e0e0e0;
+}
+
+.titleSonLabels {
+  color: #44546F;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* modal create labels */
+.overlayCreateLabel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4001;
+}
+
+.createLabelModal {
+  background: #fff;
+  border-radius: 8px;
+  width: 280px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  animation: fadeIn 0.2s ease;
+}
+
+.headerCreateLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.titleCreateLabel {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btnCloseCreateLabel {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.labelTitle, .labelColorTitle {
+  display: block;
+  font-weight: 500;
+  margin: 8px 0 4px;
+}
+
+.inputCreateLabel {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  margin: 10px 0 16px;
+}
+
+.colorOption {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btnCreateLabel {
+  width: 100%;
+  background-color: #0052cc;
+  color: #fff;
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btnCreateLabel:hover {
+  background-color: #0747a6;
+}
+
+.colorOption {
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.colorOption:hover {
+  transform: scale(1.1);
+}
+
+.iconSelectedColor {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+}
+
+/* modal edit labels */
+.footerEditLabel {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btnSaveLabel {
+  flex: 1;
+  background-color: #0052cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btnSaveLabel:hover {
+  background-color: #0747a6;
+}
+
+.btnDeleteLabel {
+  flex: 1;
+  background-color: #eb5a46;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btnDeleteLabel:hover {
+  background-color: #cf513d;
+}
+
+/* alert 2 */
+.swal2-container {
+  z-index: 9999 !important;
+}
