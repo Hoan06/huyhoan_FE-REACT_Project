@@ -1077,7 +1077,7 @@ html, body {
 
 .list {
   background: #ebecf0;
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 8px;
   width: 272px;
   flex-shrink: 0;
@@ -1118,6 +1118,14 @@ html, body {
   cursor: pointer;
   padding: 6px 8px;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+
+.addCard img {
+  width: 32px;
 }
 
 .addCard:hover {
@@ -1129,7 +1137,7 @@ html, body {
   color: #5e6c84;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   font-weight: 500;
   cursor: pointer;
   height: 40px;
@@ -1137,6 +1145,10 @@ html, body {
   border-radius: 8px;
   min-width: 272px;
   box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+}
+
+.addList img {
+  width: 32px;
 }
 
 .addList:hover {
@@ -1454,7 +1466,7 @@ html, body {
 }
 
 .btnAddCard {
-  background: #0079bf;
+  background: #0C66E4;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -1500,7 +1512,7 @@ html, body {
 }
 
 .btnAddList {
-  background: #0079bf;
+  background: #0C66E4;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -1526,7 +1538,7 @@ html, body {
 .list.addList {
   padding: 6px 8px;
   color: #5e6c84;
-  border-radius: 4px;
+  border-radius: 12px;
   cursor: pointer;
   transition: background 0.2s;
 }
@@ -1635,6 +1647,13 @@ html, body {
   font-size: 16px;
   font-weight: 600;
   color: #172b4d;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.textDescription img {
+  width: 20px;
 }
 
 .textareaDetail {
@@ -1659,6 +1678,7 @@ html, body {
 .actionModalDetail {
   display: flex;
   gap: 12px;
+  padding-left: 10px;
 }
 
 .saveDetail {
@@ -1758,6 +1778,7 @@ html, body {
 
 .editorContainer {
   margin-top: 16px;
+  padding-left: 10px;
 }
 
 .block2MainDetail {

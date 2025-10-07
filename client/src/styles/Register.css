@@ -140,6 +140,13 @@ form input {
   color: #0D6EFD;
 }
 
+.alert-container {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  width: 300px; 
+  z-index: 1000; 
+}
 
 
 

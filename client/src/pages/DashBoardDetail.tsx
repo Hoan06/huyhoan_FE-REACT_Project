@@ -20,6 +20,8 @@ import iconNoLabel from "../assets/icons/icon_noLabels.png";
 import iconSelectFilter from "../assets/icons/icon_select_filter.png";
 import iconCloseFilter from "../assets/icons/icon_close_filter.png";
 import iconSelect from "../assets/icons/icon_select.png";
+import iconSaveCard from "../assets/icons/icon_save_card.png";
+import iconDescription from "../assets/icons/icon_description.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
 import Swal from "sweetalert2";
@@ -292,7 +294,7 @@ export default function DashBoardDetail() {
                   </div>
                 ) : (
                   <div className="addCard" onClick={() => setAddingCard(true)}>
-                    + Add a card
+                    + Add a card <img src={iconSaveCard} alt="" />
                   </div>
                 )}
               </div>
@@ -330,7 +332,7 @@ export default function DashBoardDetail() {
                   className="list addList"
                   onClick={() => setAddingList(true)}
                 >
-                  + Add another list
+                  + Add another list <img src={iconSaveCard} alt="" />
                 </div>
               )}
             </div>
@@ -509,7 +511,9 @@ export default function DashBoardDetail() {
               <div className="block1MainDetail">
                 <div className="descriptionHeader">
                   <i className="fa fa-align-left"></i>
-                  <span className="textDescription">Description</span>
+                  <span className="textDescription">
+                    <img src={iconDescription} alt="" /> Description
+                  </span>
                 </div>
 
                 <div className="editorContainer" data-color-mode="light">

@@ -9,7 +9,6 @@ import iconWorkspaces from "../assets/icons/Icon_yourWorkspaces.png";
 import logoTrelloFull from "../assets/logos/trello-logo-full.png.png";
 import iconSchedule from "../assets/icons/Icon_schedule.png";
 import iconStars from "../assets/icons/icon_title_stars.png";
-import iconEditBoard from "../assets/icons/icon_edit_board.png";
 import iconSelect from "../assets/icons/icon_select.png";
 import iconCloseModalCreate from "../assets/icons/icon_close_modal_create.png";
 import board1 from "../assets/images/board1.jpg";
@@ -19,13 +18,13 @@ import board4 from "../assets/images/board4.jpg";
 import board1Starred from "../assets/images/board1-starred.jpg";
 import board2Starred from "../assets/images/board2-starred.jpg";
 import HeaderMain from "../components/HeaderMain";
-import { CloseCircleOutlined } from "@ant-design/icons";
 import { useLocation } from "react-router-dom";
+import BoardCard from "../components/BoardCard";
+import ClosedBoards from "../components/CloseBoard";
 
 export default function Board() {
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
-  const [hoveredBoard, setHoveredBoard] = useState<number | null>(null);
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
   const [showClosedBoards, setShowClosedBoards] = useState(false);
 
@@ -142,28 +141,14 @@ export default function Board() {
 
               <div className="listBoards">
                 {boards.map((board, idx) => (
-                  <div
-                    className="boardInfo"
+                  <BoardCard
                     key={idx}
-                    onMouseEnter={() => setHoveredBoard(idx)}
-                    onMouseLeave={() => setHoveredBoard(null)}
-                    style={{ position: "relative" }}
-                  >
-                    <img className="backgroundBoard" src={board.img} alt="" />
-                    <div className="overlay"></div>
-                    <span className="titleBoard">{board.title}</span>
-                    {hoveredBoard === idx && (
-                      <div
-                        onClick={() => setShowModalUpdate(true)}
-                        className="editBoard"
-                        style={{ display: "flex" }}
-                      >
-                        <img src={iconEditBoard} alt="" />
-                        <span className="textEdit">Edit this board</span>
-                      </div>
-                    )}
-                  </div>
+                    title={board.title}
+                    img={board.img}
+                    onEdit={() => setShowModalUpdate(true)}
+                  />
                 ))}
+
                 <div className="createBoard">
                   <button
                     className="btnCreateBoard"
@@ -203,27 +188,12 @@ export default function Board() {
               </div>
             </>
           ) : (
-            <>
-              {/* --- Closed Boards --- */}
-              <div className="headerClosed">
-                <div className="textHeaderClosed">
-                  <CloseCircleOutlined className="listContentIcon" />
-                  <h1 className="textList textListClosed">Closed Boards</h1>
-                </div>
-              </div>
-              <div className="listClosed">
-                <div className="boardInfoClosed">
-                  <img className="backgroundBoardClosed" src={board1} alt="" />
-                  <div className="overlay"></div>
-                  <span className="titleBoardClosed">Important Board 01</span>
-                </div>
-                <div className="boardInfoClosed">
-                  <img className="backgroundBoardClosed" src={board2} alt="" />
-                  <div className="overlay"></div>
-                  <span className="titleBoardClosed">Important Board 02</span>
-                </div>
-              </div>
-            </>
+            <ClosedBoards
+              boards={[
+                { img: board1, title: "Important Board 01" },
+                { img: board2, title: "Important Board 02" },
+              ]}
+            />
           )}
         </div>
       </div>
