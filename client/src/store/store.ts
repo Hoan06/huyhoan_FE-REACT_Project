@@ -3,7 +3,7 @@ import resgisterReducer from "../api/resgisterSlice";
 import loginReducer from "../api/loginSlice";
 import userReducer from "../api/userSlice";
 import boardReducer from "../api/boardSlice";
-import dashboardReducer from "../api/dashBoardDetail";
+import dashboardReducer from "../api/dashBoardDetailSlice";
 
 const store = configureStore({
   reducer: {

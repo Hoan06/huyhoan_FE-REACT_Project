@@ -16,3 +16,27 @@ export interface Board {
   is_starred: boolean;
   created_at: string;
 }
+
+export interface List {
+  id: number;
+  board_id: number;
+  title: string;
+  created_at: string;
+}
+
+export interface Task {
+  id: number;
+  list_id: number;
+  title: string;
+  description: string;
+  status: string;
+  due_date: string;
+  created_at: string;
+}
+
+export interface Tag {
+  id: number;
+  task_id: number;
+  content: string;
+  color: string;
+}

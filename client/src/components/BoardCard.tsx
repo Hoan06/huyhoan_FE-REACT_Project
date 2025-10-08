@@ -26,7 +26,16 @@ function BoardCard({ id, title, img, onClick, onEdit }: BoardCardProps) {
       <span className="titleBoard">{title}</span>
 
       {isHovered && (
-        <div onClick={onEdit} className="editBoard" style={{ display: "flex" }}>
+        <div
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onEdit) {
+              onEdit();
+            }
+          }}
+          className="editBoard"
+          style={{ display: "flex" }}
+        >
           <img src={iconEditBoard} alt="edit" />
           <span className="textEdit">Edit this board</span>
         </div>

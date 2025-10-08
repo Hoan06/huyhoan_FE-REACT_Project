@@ -34,7 +34,7 @@ import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/store";
-import { deleteBoard } from "../api/dashBoardDetail";
+import { deleteBoard } from "../api/dashBoardDetailSlice";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
