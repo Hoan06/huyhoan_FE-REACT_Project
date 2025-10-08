@@ -3,18 +3,21 @@ import "../styles/Board.css";
 import iconEditBoard from "../assets/icons/icon_edit_board.png";
 
 interface BoardCardProps {
+  id: number;
   title: string;
   img: string;
+  onClick: (id: number) => void;
   onEdit?: () => void;
 }
 
-function BoardCard({ title, img, onEdit }: BoardCardProps) {
+function BoardCard({ id, title, img, onClick, onEdit }: BoardCardProps) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div
       className="boardInfo"
       onMouseEnter={() => setIsHovered(true)}
+      onClick={() => onClick(id)}
       onMouseLeave={() => setIsHovered(false)}
       style={{ position: "relative" }}
     >

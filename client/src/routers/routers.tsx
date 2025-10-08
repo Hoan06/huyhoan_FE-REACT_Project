@@ -11,6 +11,9 @@ import Board from "../pages/Board";
 export const routers = createBrowserRouter([
   { path: "/", element: <Login></Login> },
   { path: "/resgister", element: <Resgister></Resgister> },
-  { path: "/dashboard_detail", element: <DashBoardDetail></DashBoardDetail> },
+  {
+    path: "/dashboard_detail/:id",
+    element: <DashBoardDetail></DashBoardDetail>,
+  },
   { path: "/dashboard", element: <Board></Board> },
 ]);

@@ -26,12 +26,15 @@ import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
 import Swal from "sweetalert2";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MDEditor from "@uiw/react-md-editor";
 import { MinusOutlined } from "@ant-design/icons";
 import { Button, Calendar, Checkbox, DatePicker, Input, Modal } from "antd";
 import type { Dayjs } from "dayjs";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
+import { deleteBoard } from "../api/dashBoardDetail";
 
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
@@ -85,6 +88,8 @@ export default function DashBoardDetail() {
 
   // chuyển trang
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+  const { id } = useParams<{ id: string }>();
 
   const handleChangePage = () => {
     navigate("/dashboard");
@@ -105,8 +110,17 @@ export default function DashBoardDetail() {
       confirmButtonText: "Yes, close it!",
       cancelButtonText: "Cancel",
     }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire("Closed!", "Your board has been closed.", "success");
+      if (result.isConfirmed && id) {
+        dispatch(deleteBoard(id))
+          .unwrap()
+          .then(() => {
+            Swal.fire("Deleted!", "Your board has been deleted.", "success");
+            navigate("/dashboard");
+            setShowModal(false);
+          })
+          .catch(() => {
+            Swal.fire("Error!", "Failed to delete board.", "error");
+          });
       }
     });
   };

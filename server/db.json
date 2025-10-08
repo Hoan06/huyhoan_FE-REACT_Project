@@ -20,6 +20,13 @@
       "password": "Huyhoan2006@",
       "created_at": "2025-10-07T01:56:56.668Z",
       "id": 3
+    },
+    {
+      "email": "demo2@gmail.com",
+      "userName": "huyhoan",
+      "password": "Huyhoan2006@",
+      "created_at": "2025-10-08T01:58:41.750Z",
+      "id": 4
     }
   ],
   "boards": [
@@ -37,18 +44,39 @@
       "user_id": 2,
       "title": "Marketing Campaign",
       "description": "Chiến dịch marketing Q2",
-      "backdrop": "",
+      "backdrop": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/640px-Cat_August_2010-4.jpg",
       "is_starred": false,
       "created_at": "2025-03-01T10:00:00Z"
     },
     {
-      "id": 103,
       "user_id": 3,
-      "title": "App Mobile",
-      "description": "Phát triển app mobile mới",
-      "backdrop": "",
-      "is_starred": true,
-      "created_at": "2025-03-02T11:00:00Z"
+      "title": "sssss",
+      "description": "",
+      "backdrop": "/src/assets/images/board4.jpg",
+      "is_starred": false,
+      "created_at": "2025-10-08T03:55:42.659Z",
+      "color": "color1",
+      "id": 104
+    },
+    {
+      "user_id": 3,
+      "title": "sdsd",
+      "description": "",
+      "backdrop": "/src/assets/images/board1.jpg",
+      "is_starred": false,
+      "created_at": "2025-10-08T04:36:45.991Z",
+      "color": "#0079BF",
+      "id": 106
+    },
+    {
+      "user_id": 3,
+      "title": "demo",
+      "description": "",
+      "backdrop": "/src/assets/images/board2.jpg",
+      "is_starred": false,
+      "created_at": "2025-10-08T04:38:24.167Z",
+      "color": "#0079BF",
+      "id": 107
     }
   ],
   "lists": [

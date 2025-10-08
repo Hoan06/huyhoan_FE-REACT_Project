@@ -8,40 +8,98 @@ import iconSetting from "../assets/icons/Icon_setting.png";
 import iconWorkspaces from "../assets/icons/Icon_yourWorkspaces.png";
 import logoTrelloFull from "../assets/logos/trello-logo-full.png.png";
 import iconSchedule from "../assets/icons/Icon_schedule.png";
-import iconStars from "../assets/icons/icon_title_stars.png";
-import iconSelect from "../assets/icons/icon_select.png";
-import iconCloseModalCreate from "../assets/icons/icon_close_modal_create.png";
-import board1 from "../assets/images/board1.jpg";
-import board2 from "../assets/images/board2.jpg";
-import board3 from "../assets/images/board3.jpg";
-import board4 from "../assets/images/board4.jpg";
-import board1Starred from "../assets/images/board1-starred.jpg";
-import board2Starred from "../assets/images/board2-starred.jpg";
 import HeaderMain from "../components/HeaderMain";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import BoardCard from "../components/BoardCard";
 import ClosedBoards from "../components/CloseBoard";
+import ModalCreateBoard from "../components/ModalCreateBoard";
+import ModalEditBoard from "../components/ModalEditBoard";
+import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../store/store";
+import { fetchDataBoard } from "../api/boardSlice";
+import { clearUser, fetchUser } from "../api/userSlice";
+import type { Board } from "../utils/Types";
+import StarredBoard from "../components/StarredBoard";
 
 export default function Board() {
   const [showModal, setShowModal] = useState(false);
   const [showModalUpdate, setShowModalUpdate] = useState(false);
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
-  const [showClosedBoards, setShowClosedBoards] = useState(false);
 
-  const boards = [
-    { img: board1, title: "Board Title 01" },
-    { img: board2, title: "Board Title 02" },
-    { img: board3, title: "Board Title 03" },
-    { img: board4, title: "Board Title 04" },
-  ];
+  const [currentView, setCurrentView] = useState<
+    "boards" | "starred" | "closed"
+  >("boards");
+
+  const [selectedBoard, setSelectedBoard] = useState<Board | null>(null);
+
+  const { boards } = useSelector((state: RootState) => state.board);
+  const { user } = useSelector((state: RootState) => state.user);
+  const userBoards = boards.filter((board) => board.user_id === user?.id);
 
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     if (location.state?.showClosedBoards) {
-      setShowClosedBoards(true);
+      setCurrentView("closed");
+      window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    const check = localStorage.getItem("token");
+    if (!check) {
+      Swal.fire({
+        icon: "warning",
+        title: "Bạn chưa đăng nhập!",
+        text: "Vui lòng đăng nhập để truy cập trang Board.",
+        confirmButtonText: "Đăng nhập ngay",
+        confirmButtonColor: "#3085d6",
+        allowOutsideClick: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/");
+        }
+      });
+    } else {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, navigate]);
+
+  useEffect(() => {
+    dispatch(fetchDataBoard());
+  }, [dispatch, navigate]);
+
+  const handleSignOut = () => {
+    Swal.fire({
+      title: "Đăng xuất?",
+      text: "Bạn có chắc chắn muốn đăng xuất không?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Đăng xuất",
+      cancelButtonText: "Hủy",
+      confirmButtonColor: "#d33",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(clearUser());
+        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "Đã đăng xuất!",
+          showConfirmButton: false,
+          timer: 1200,
+        });
+      }
+    });
+  };
+
+  const handleBoardClick = (id: number) => {
+    navigate(`/dashboard_detail/${id}`);
+  };
 
   return (
     <>
@@ -69,20 +127,23 @@ export default function Board() {
           <div className="listNavbar">
             <div
               className="boardsSidebar typeSidebar"
-              onClick={() => setShowClosedBoards(false)}
+              onClick={() => setCurrentView("boards")}
             >
               <img className="icons" src={iconBoard} alt="" />
               <span className="textIcons">Boards</span>
             </div>
 
-            <div className="starredBoards typeSidebar">
+            <div
+              className="starredBoards typeSidebar"
+              onClick={() => setCurrentView("starred")}
+            >
               <img className="icons" src={iconStarsBoard} alt="" />
               <span className="textIcons">Starred Boards</span>
             </div>
 
             <div
               className="closeBoards typeSidebar"
-              onClick={() => setShowClosedBoards(true)}
+              onClick={() => setCurrentView("closed")}
             >
               <img className="icons" src={iconCloseBoard} alt="" />
               <span className="textIcons">Closed Boards</span>
@@ -96,7 +157,7 @@ export default function Board() {
               <img className="icons" src={iconSetting} alt="" />
               <span className="textIcons">Settings</span>
             </div>
-            <div className="SignOut typeSidebar">
+            <div className="SignOut typeSidebar" onClick={handleSignOut}>
               <img className="icons" src={iconSignOut} alt="" />
               <span className="textIcons">Sign out</span>
             </div>
@@ -105,9 +166,8 @@ export default function Board() {
 
         {/* Nội dung chính */}
         <div className="contentDashboard">
-          {!showClosedBoards ? (
+          {currentView === "boards" && (
             <>
-              {/* --- Your Workspaces + Starred Boards --- */}
               <div className="headerContent">
                 <div className="block1">
                   <img
@@ -140,15 +200,19 @@ export default function Board() {
               </div>
 
               <div className="listBoards">
-                {boards.map((board, idx) => (
+                {userBoards.map((board, idx) => (
                   <BoardCard
                     key={idx}
+                    id={board.id}
                     title={board.title}
-                    img={board.img}
-                    onEdit={() => setShowModalUpdate(true)}
+                    img={board.backdrop}
+                    onClick={() => handleBoardClick(board.id)}
+                    onEdit={() => {
+                      setSelectedBoard(board);
+                      setShowModalUpdate(true);
+                    }}
                   />
                 ))}
-
                 <div className="createBoard">
                   <button
                     className="btnCreateBoard"
@@ -159,232 +223,53 @@ export default function Board() {
                 </div>
               </div>
 
-              <div className="headerStarred">
-                <div className="textHeaderStarred">
-                  <img className="listContentIcon" src={iconStars} alt="" />
-                  <h1 className="textList textListStarred">Starred Boards</h1>
-                </div>
-              </div>
-
-              <div className="listStarred">
-                <div className="boardInfoStarred">
-                  <img
-                    className="backgroundBoardStarred"
-                    src={board1Starred}
-                    alt=""
-                  />
-                  <div className="overlay"></div>
-                  <span className="titleBoardStarred">Important Board 01</span>
-                </div>
-                <div className="boardInfoStarred">
-                  <img
-                    className="backgroundBoardStarred"
-                    src={board2Starred}
-                    alt=""
-                  />
-                  <div className="overlay"></div>
-                  <span className="titleBoardStarred">Important Board 02</span>
-                </div>
-              </div>
+              <StarredBoard
+                boards={userBoards
+                  .filter((board) => board.is_starred)
+                  .map((board) => ({
+                    img: board.backdrop,
+                    title: board.title,
+                  }))}
+              />
             </>
-          ) : (
+          )}
+
+          {currentView === "starred" && (
+            <StarredBoard
+              boards={userBoards
+                .filter((board) => board.is_starred)
+                .map((board) => ({
+                  img: board.backdrop,
+                  title: board.title,
+                }))}
+            />
+          )}
+
+          {currentView === "closed" && (
             <ClosedBoards
-              boards={[
-                { img: board1, title: "Important Board 01" },
-                { img: board2, title: "Important Board 02" },
-              ]}
+              boards={userBoards
+                .filter((board) => !board.is_starred)
+                .map((board) => ({
+                  img: board.backdrop,
+                  title: board.title,
+                }))}
             />
           )}
         </div>
       </div>
 
       {/* Modal thêm mới cái board */}
-      {showModal && (
-        <>
-          <div
-            className="overlayModalCreate"
-            onClick={() => setShowModal(false)}
-          ></div>
-          <div className="modalCreateBoard">
-            <div className="headerModalCreate">
-              <h2 className="textHeaderCreate">Create board</h2>
-              <div
-                className="closeModalCreate"
-                onClick={() => setShowModal(false)}
-                style={{ cursor: "pointer" }}
-              >
-                <img className="btnClose" src={iconCloseModalCreate} alt="" />
-              </div>
-            </div>
-            <div className="contentCreateBoard">
-              <div className="choiceBackgroundCreate">
-                <h2 className="textModalBackground">Background</h2>
-                <div className="listBackgroundCreate">
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board1} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board2} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board3} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board4} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="lineModalCreate"></div>
-              <div className="choiceColorCreate">
-                <h2 className="textModalColor">Color</h2>
-                <div className="listColorCreate">
-                  <div className="colorCreateInfo">
-                    <div className="color1"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color2"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color3"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color4"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color5"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color6"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="lineModalCreate"></div>
-              <div className="boardTitleModal">
-                <h2 className="textBoardTitle">
-                  Board title <span>*</span>
-                </h2>
-                <input
-                  className="inputTitle"
-                  type="text"
-                  placeholder="E.g. Shopping list for birthday..."
-                />
-                <p className="noticeTitle">
-                  👋 Please provide a valid board title.
-                </p>
-              </div>
-            </div>
-            <div className="footerModalCreate">
-              <div className="selectButtonCreate">
-                <button
-                  className="closeModalCreateFooter"
-                  onClick={() => setShowModal(false)}
-                >
-                  Close
-                </button>
-                <button className="createNewBoard">Create</button>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+      {showModal && <ModalCreateBoard onClose={() => setShowModal(false)} />}
 
       {/* Modal sửa board */}
-      {showModalUpdate && (
-        <>
-          <div
-            className="overlayModalCreate"
-            onClick={() => setShowModalUpdate(false)}
-          ></div>
-          <div className="modalCreateBoard">
-            <div className="headerModalCreate">
-              <h2 className="textHeaderCreate">Update board</h2>
-              <div
-                className="closeModalCreate"
-                onClick={() => setShowModalUpdate(false)}
-                style={{ cursor: "pointer" }}
-              >
-                <img className="btnClose" src={iconCloseModalCreate} alt="" />
-              </div>
-            </div>
-            <div className="contentCreateBoard">
-              <div className="choiceBackgroundCreate">
-                <h2 className="textModalBackground">Background</h2>
-                <div className="listBackgroundCreate">
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board1} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board2} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board3} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="backgroundCreateInfo">
-                    <img className="imgBackground" src={board4} alt="" />
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="lineModalCreate"></div>
-              <div className="choiceColorCreate">
-                <h2 className="textModalColor">Color</h2>
-                <div className="listColorCreate">
-                  <div className="colorCreateInfo">
-                    <div className="color1"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color2"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color3"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color4"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color5"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                  <div className="colorCreateInfo">
-                    <div className="color6"></div>
-                    <img className="selectIconCreate" src={iconSelect} alt="" />
-                  </div>
-                </div>
-              </div>
-              <div className="lineModalCreate"></div>
-              <div className="boardTitleModal">
-                <h2 className="textBoardTitle">
-                  Board title <span>*</span>
-                </h2>
-                <input
-                  className="inputTitle"
-                  type="text"
-                  placeholder="E.g. Shopping list for birthday..."
-                />
-                <p className="noticeTitle">
-                  👋 Please provide a valid board title.
-                </p>
-              </div>
-            </div>
-          </div>
-        </>
+      {showModalUpdate && selectedBoard && (
+        <ModalEditBoard
+          board={selectedBoard}
+          onClose={() => {
+            setShowModalUpdate(false);
+            setSelectedBoard(null);
+          }}
+        />
       )}
     </>
   );

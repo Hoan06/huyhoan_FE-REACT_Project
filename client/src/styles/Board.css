@@ -905,3 +905,20 @@ html, body {
     line-height: 24px;
   }
 }
+
+.noticeTitle {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+  transition: 0.3s;
+}
+
+.noticeTitle.showError {
+  color: #e74c3c;
+}
+
+.inputError {
+  border: 1.5px solid #e74c3c;
+}
+
+
