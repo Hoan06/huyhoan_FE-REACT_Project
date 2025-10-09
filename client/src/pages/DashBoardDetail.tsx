@@ -20,7 +20,7 @@ import iconNoLabel from "../assets/icons/icon_noLabels.png";
 import iconSelectFilter from "../assets/icons/icon_select_filter.png";
 import iconCloseFilter from "../assets/icons/icon_close_filter.png";
 import iconSelect from "../assets/icons/icon_select.png";
-import iconSaveCard from "../assets/icons/icon_save_card.png";
+// import iconSaveCard from "../assets/icons/icon_save_card.png";
 import iconDescription from "../assets/icons/icon_description.png";
 import board1 from "../assets/images/board1.jpg";
 import HeaderMain from "../components/HeaderMain";
@@ -35,20 +35,21 @@ import dayjs from "dayjs";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "../store/store";
 import { deleteBoard } from "../api/dashBoardDetailSlice";
-
+import BoardLists from "../components/BoardLists";
+import type { Task, List } from "../utils/Types";
 export default function DashBoardDetail() {
   const [showSidebarMobile, setShowSidebarMobile] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
 
-  const [addingCard, setAddingCard] = useState(false);
-  const [newCardTitle, setNewCardTitle] = useState("");
+  // const [addingCard, setAddingCard] = useState(false);
+  // const [newCardTitle, setNewCardTitle] = useState("");
 
-  const [addingList, setAddingList] = useState(false);
-  const [newListTitle, setNewListTitle] = useState("");
+  // const [addingList, setAddingList] = useState(false);
+  // const [newListTitle, setNewListTitle] = useState("");
 
-  // phần này của chỉnh tên
-  const [editingListTitle, setEditingListTitle] = useState(false);
-  const [listTitle, setListTitle] = useState("Todo");
+  // // phần này của chỉnh tên
+  // const [editingListTitle, setEditingListTitle] = useState(false);
+  // const [listTitle, setListTitle] = useState("Todo");
 
   // phần modal detail
   const [showModal, setShowModal] = useState(false);
@@ -76,6 +77,57 @@ export default function DashBoardDetail() {
     { id: 3, name: "todo", color: "#F87168" },
     { id: 4, name: "in-progress", color: "#9F8FEF" },
   ]);
+
+  const lists: List[] = [
+    {
+      id: 201,
+      board_id: 101,
+      title: "Việc cần làm",
+      created_at: "2025-02-28T13:00:00Z",
+    },
+    {
+      id: 202,
+      board_id: 102,
+      title: "Ideas",
+      created_at: "2025-03-01T10:30:00Z",
+    },
+    {
+      id: 203,
+      board_id: 103,
+      title: "Backlog",
+      created_at: "2025-03-02T11:30:00Z",
+    },
+  ];
+
+  const tasks: Task[] = [
+    {
+      id: 301,
+      list_id: 201,
+      title: "Thiết kế giao diện",
+      description: "Tạo wireframe cho trang chủ",
+      status: "pending",
+      due_date: "2025-03-05T23:59:59Z",
+      created_at: "2025-02-28T13:30:00Z",
+    },
+    {
+      id: 302,
+      list_id: 202,
+      title: "Nghiên cứu thị trường",
+      description: "Phân tích đối thủ",
+      status: "in_progress",
+      due_date: "2025-03-06T17:00:00Z",
+      created_at: "2025-03-01T11:00:00Z",
+    },
+    {
+      id: 303,
+      list_id: 203,
+      title: "Setup project",
+      description: "Khởi tạo repo Git",
+      status: "done",
+      due_date: "2025-03-04T20:00:00Z",
+      created_at: "2025-03-02T12:00:00Z",
+    },
+  ];
   // modal create labels
   const [showCreateLabelModal, setShowCreateLabelModal] = useState(false);
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
@@ -242,114 +294,17 @@ export default function DashBoardDetail() {
             </div>
           </div>
 
+          {/* hiển thị list */}
           <div className="mainContent">
-            <div className="listsContainer">
-              <div className="list">
-                <div className="listHeader">
-                  {editingListTitle ? (
-                    <input
-                      type="text"
-                      className="inputEditListTitle"
-                      value={listTitle}
-                      placeholder={listTitle}
-                      onChange={(e) => setListTitle(e.target.value)}
-                      onBlur={() => setEditingListTitle(false)}
-                      autoFocus
-                    />
-                  ) : (
-                    <span onClick={() => setEditingListTitle(true)}>
-                      {listTitle}
-                    </span>
-                  )}
-                </div>
-
-                <div className="card">
-                  <img
-                    className="tickerCardSuccess"
-                    src={iconTickerSuccess}
-                    alt=""
-                  />
-                  Thuê DJ
-                </div>
-                <div className="card" onClick={() => setShowModal(true)}>
-                  Lên kịch bản chương trình
-                </div>
-                <div className="card">Chuẩn bị kịch</div>
-                <div className="card">Kịch bản</div>
-                <div className="card">Thuê MC</div>
-
-                {addingCard ? (
-                  <div className="addCardForm">
-                    <input
-                      type="text"
-                      placeholder="Enter a title or paste a link"
-                      value={newCardTitle}
-                      onChange={(e) => setNewCardTitle(e.target.value)}
-                      className="inputAddCard"
-                    />
-                    <div className="actionsAddCard">
-                      <button
-                        className="btnAddCard"
-                        onClick={() => {
-                          console.log("New card:", newCardTitle);
-                          setNewCardTitle("");
-                          setAddingCard(false);
-                        }}
-                      >
-                        Add card
-                      </button>
-                      <button
-                        className="btnCancelAddCard"
-                        onClick={() => setAddingCard(false)}
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="addCard" onClick={() => setAddingCard(true)}>
-                    + Add a card <img src={iconSaveCard} alt="" />
-                  </div>
-                )}
-              </div>
-
-              {addingList ? (
-                <div className="formAddList">
-                  <input
-                    type="text"
-                    placeholder="Enter list name..."
-                    value={newListTitle}
-                    onChange={(e) => setNewListTitle(e.target.value)}
-                    className="inputAddList"
-                  />
-                  <div className="actionsAddList">
-                    <button
-                      className="btnAddList"
-                      onClick={() => {
-                        console.log("New list:", newListTitle);
-                        setNewListTitle("");
-                        setAddingList(false);
-                      }}
-                    >
-                      Add list
-                    </button>
-                    <button
-                      className="btnCancelAddList"
-                      onClick={() => setAddingList(false)}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <div
-                  className="list addList"
-                  onClick={() => setAddingList(true)}
-                >
-                  + Add another list <img src={iconSaveCard} alt="" />
-                </div>
-              )}
-            </div>
+            <BoardLists
+              lists={lists}
+              tasks={tasks}
+              onCardClick={(card) => {
+                setTitle(card.title);
+                setValue(card.description);
+                setShowModal(true);
+              }}
+            />
           </div>
         </div>
       </div>
