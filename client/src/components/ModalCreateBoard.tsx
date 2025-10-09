@@ -20,6 +20,9 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.user);
 
+  const [hoveredBg, setHoveredBg] = useState<string | null>(null);
+  const [hoveredColor, setHoveredColor] = useState<string | null>(null);
+
   const [title, setTitle] = useState("");
   const [titleError, setTitleError] = useState(false);
   const [selectedBg, setSelectedBg] = useState<string | null>(board1);
@@ -37,14 +40,16 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
 
   useEffect(() => {
     dispatch(fetchUser());
-  }, []);
+  }, [dispatch]);
 
   const handleSelectBg = (bg: string) => {
     setSelectedBg(bg);
+    setSelectedColor(null);
   };
 
   const handleSelectColor = (color: string) => {
     setSelectedColor(color);
+    setSelectedBg(null);
   };
 
   const handleCreate = async () => {
@@ -53,23 +58,33 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
       return;
     }
 
+    let finalBackdrop = selectedBg || board1;
+    const finalColor = selectedColor || "#0079BF";
+
+    if (selectedColor) {
+      finalBackdrop = selectedColor;
+    }
+
     const newBoard = {
       user_id: user?.id,
       title,
       description: "",
-      backdrop: selectedBg || board1,
+      backdrop: finalBackdrop,
       is_starred: false,
+      is_close: false,
       created_at: new Date().toISOString(),
-      color: selectedColor || "#0079BF",
+      color: finalColor,
     };
 
     await dispatch(addBoard(newBoard));
+
     Swal.fire({
       icon: "success",
       title: "Tạo board thành công!",
       showConfirmButton: false,
       timer: 1200,
     });
+
     onClose();
   };
 
@@ -94,13 +109,18 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
                   className="backgroundCreateInfo"
                   key={idx}
                   onClick={() => handleSelectBg(img)}
+                  onMouseEnter={() => setHoveredBg(img)}
+                  onMouseLeave={() => setHoveredBg(null)}
+                  style={{ position: "relative" }}
                 >
                   <img className="imgBackground" src={img} alt="" />
-                  <img
-                    className="selectIconCreate"
-                    src={selectedBg === img ? iconSelectSuccess : iconSelect}
-                    alt=""
-                  />
+                  {(selectedBg === img || hoveredBg === img) && (
+                    <img
+                      className="selectIconCreate"
+                      src={selectedBg === img ? iconSelectSuccess : iconSelect}
+                      alt=""
+                    />
+                  )}
                 </div>
               ))}
             </div>
@@ -117,6 +137,9 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
                   className="colorCreateInfo"
                   key={idx}
                   onClick={() => handleSelectColor(color)}
+                  onMouseEnter={() => setHoveredColor(color)}
+                  onMouseLeave={() => setHoveredColor(null)}
+                  style={{ position: "relative" }}
                 >
                   <div
                     className="colorBox"
@@ -127,13 +150,15 @@ export default function ModalCreateBoard({ onClose }: ModalCreateBoardProps) {
                       borderRadius: "8px",
                     }}
                   ></div>
-                  <img
-                    className="selectIconCreate"
-                    src={
-                      selectedColor === color ? iconSelectSuccess : iconSelect
-                    }
-                    alt=""
-                  />
+                  {(selectedColor === color || hoveredColor === color) && (
+                    <img
+                      className="selectIconCreate"
+                      src={
+                        selectedColor === color ? iconSelectSuccess : iconSelect
+                      }
+                      alt=""
+                    />
+                  )}
                 </div>
               ))}
             </div>

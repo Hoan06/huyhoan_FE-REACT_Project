@@ -4,6 +4,8 @@ import loginReducer from "../api/loginSlice";
 import userReducer from "../api/userSlice";
 import boardReducer from "../api/boardSlice";
 import dashboardReducer from "../api/dashBoardDetailSlice";
+import listReducer from "../api/listSlice";
+import taskReducer from "../api/taskSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +14,8 @@ const store = configureStore({
     user: userReducer,
     board: boardReducer,
     dashboard: dashboardReducer,
+    list: listReducer,
+    task: taskReducer,
   },
 });
 

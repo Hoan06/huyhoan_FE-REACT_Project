@@ -14,6 +14,7 @@ export interface Board {
   description: string;
   backdrop: string;
   is_starred: boolean;
+  is_close: boolean;
   created_at: string;
 }
 

@@ -6,6 +6,7 @@ interface BoardCardProps {
   id: number;
   title: string;
   img: string;
+  color?: string;
   onClick: (id: number) => void;
   onEdit?: () => void;
 }
@@ -21,7 +22,20 @@ function BoardCard({ id, title, img, onClick, onEdit }: BoardCardProps) {
       onMouseLeave={() => setIsHovered(false)}
       style={{ position: "relative" }}
     >
-      <img className="backgroundBoard" src={img} alt={title} />
+      {img.startsWith("#") ? (
+        <div
+          className="backgroundBoard"
+          style={{
+            backgroundColor: img,
+            width: "100%",
+            height: "100%",
+            borderRadius: "10px",
+          }}
+        ></div>
+      ) : (
+        <img className="backgroundBoard" src={img} alt={title} />
+      )}
+
       <div className="overlay"></div>
       <span className="titleBoard">{title}</span>
 

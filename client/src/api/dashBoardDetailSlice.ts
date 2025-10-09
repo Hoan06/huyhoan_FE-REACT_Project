@@ -20,8 +20,24 @@ const initialState: BoardState = {
 export const deleteBoard = createAsyncThunk(
   "dashboard/deleteBoard",
   async (id: string) => {
-    await axios.delete(`${API_BOARD}/${id}`);
-    return id;
+    const response = await axios.patch(`${API_BOARD}/${id}`, {
+      is_close: true,
+    });
+    return response.data;
+  }
+);
+
+export const toggleStarBoard = createAsyncThunk(
+  "dashboard/toggleStarBoard",
+  async (id: number) => {
+    const response = await axios.get(`${API_BOARD}/${id}`);
+    const board = response.data;
+
+    const updated = await axios.patch(`${API_BOARD}/${id}`, {
+      is_starred: !board.is_starred,
+    });
+
+    return updated.data;
   }
 );
 
@@ -35,11 +51,21 @@ const dashboardSlice = createSlice({
         state.status = "pending";
       })
       .addCase(deleteBoard.fulfilled, (state, action) => {
-        state.boards = state.boards.filter(
-          (b) => b.id !== Number(action.payload)
-        );
+        state.boards = state.boards.filter((b) => b.id !== action.payload.id);
       })
       .addCase(deleteBoard.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      .addCase(toggleStarBoard.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(toggleStarBoard.fulfilled, (state, action) => {
+        state.boards = state.boards.map((b) =>
+          b.id === action.payload.id ? action.payload : b
+        );
+      })
+      .addCase(toggleStarBoard.rejected, (state, action) => {
         state.status = "rejected";
         state.error = action.payload;
       });

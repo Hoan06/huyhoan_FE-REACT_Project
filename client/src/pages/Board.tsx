@@ -46,8 +46,10 @@ export default function Board() {
   useEffect(() => {
     if (location.state?.showClosedBoards) {
       setCurrentView("closed");
-      window.history.replaceState({}, document.title);
+    } else if (location.state?.showStarredBoards) {
+      setCurrentView("starred");
     }
+    window.history.replaceState({}, document.title);
   }, [location.state]);
 
   useEffect(() => {
@@ -200,19 +202,22 @@ export default function Board() {
               </div>
 
               <div className="listBoards">
-                {userBoards.map((board, idx) => (
-                  <BoardCard
-                    key={idx}
-                    id={board.id}
-                    title={board.title}
-                    img={board.backdrop}
-                    onClick={() => handleBoardClick(board.id)}
-                    onEdit={() => {
-                      setSelectedBoard(board);
-                      setShowModalUpdate(true);
-                    }}
-                  />
-                ))}
+                {userBoards
+                  .filter((board) => !board.is_close) // ✅ chỉ lấy board chưa đóng
+                  .map((board, idx) => (
+                    <BoardCard
+                      key={idx}
+                      id={board.id}
+                      title={board.title}
+                      img={board.backdrop}
+                      onClick={() => handleBoardClick(board.id)}
+                      onEdit={() => {
+                        setSelectedBoard(board);
+                        setShowModalUpdate(true);
+                      }}
+                    />
+                  ))}
+
                 <div className="createBoard">
                   <button
                     className="btnCreateBoard"
@@ -227,8 +232,10 @@ export default function Board() {
                 boards={userBoards
                   .filter((board) => board.is_starred)
                   .map((board) => ({
+                    id: board.id,
                     img: board.backdrop,
                     title: board.title,
+                    isColor: board.backdrop.startsWith("#"),
                   }))}
               />
             </>
@@ -239,21 +246,16 @@ export default function Board() {
               boards={userBoards
                 .filter((board) => board.is_starred)
                 .map((board) => ({
+                  id: board.id,
                   img: board.backdrop,
                   title: board.title,
+                  isColor: board.backdrop.startsWith("#"),
                 }))}
             />
           )}
 
           {currentView === "closed" && (
-            <ClosedBoards
-              boards={userBoards
-                .filter((board) => !board.is_starred)
-                .map((board) => ({
-                  img: board.backdrop,
-                  title: board.title,
-                }))}
-            />
+            <ClosedBoards boards={userBoards.filter((b) => b.is_close)} />
           )}
         </div>
       </div>

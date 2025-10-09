@@ -1,11 +1,18 @@
 import "../styles/Board.css";
 import iconStars from "../assets/icons/icon_title_stars.png";
 
-interface ClosedBoardsProps {
-  boards: { img: string; title: string }[];
+interface StarredBoardItem {
+  id: number;
+  img: string;
+  title: string;
+  isColor?: boolean;
 }
 
-function StarredBoard({ boards }: ClosedBoardsProps) {
+interface StarredBoardsProps {
+  boards: StarredBoardItem[];
+}
+
+function StarredBoard({ boards }: StarredBoardsProps) {
   return (
     <>
       <div className="headerClosed">
@@ -16,9 +23,20 @@ function StarredBoard({ boards }: ClosedBoardsProps) {
       </div>
 
       <div className="listClosed">
-        {boards.map((board, idx) => (
-          <div key={idx} className="boardInfoClosed">
-            <img className="backgroundBoardClosed" src={board.img} alt="" />
+        {boards.map((board) => (
+          <div key={board.id} className="boardInfoClosed">
+            {board.isColor ? (
+              <div
+                className="backgroundBoardClosed"
+                style={{ backgroundColor: board.img }}
+              ></div>
+            ) : (
+              <img
+                className="backgroundBoardClosed"
+                src={board.img}
+                alt={board.title}
+              />
+            )}
             <div className="overlay"></div>
             <span className="titleBoardClosed">{board.title}</span>
           </div>

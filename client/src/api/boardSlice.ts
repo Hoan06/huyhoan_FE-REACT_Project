@@ -32,7 +32,10 @@ export const fetchDataBoard = createAsyncThunk(
 export const addBoard = createAsyncThunk(
   "board/addBoard",
   async (
-    newBoard: Omit<Board, "id" | "user_id" | "is_starred" | "created_at">
+    newBoard: Omit<
+      Board,
+      "id" | "user_id" | "is_starred" | "is_close" | "created_at"
+    >
   ) => {
     try {
       const res = await axios.post(API_BOARD, newBoard);

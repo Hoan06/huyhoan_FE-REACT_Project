@@ -2144,3 +2144,25 @@ html, body {
 .swal2-container {
   z-index: 9999 !important;
 }
+
+.iconStarred {
+  transition: transform 0.2s, filter 0.2s;
+  cursor: pointer;
+}
+.iconStarred.starred {
+  filter: brightness(1.2) drop-shadow(0 0 4px gold);
+  transform: scale(1.1);
+}
+
+
+.addAnotherList {
+  background-color: #ebecf0;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+  cursor: pointer;
+}
+
+.addAnotherList:hover {
+  background-color: #c1c2c5;
+}
