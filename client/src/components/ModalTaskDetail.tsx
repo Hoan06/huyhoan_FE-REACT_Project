@@ -22,6 +22,7 @@ interface ModalCardDetailProps {
   onOpenDates: () => void;
   onOpenMove: () => void;
   onSave: () => void;
+  onNotEdit: () => void;
 }
 
 export default function ModalTaskDetail({
@@ -39,6 +40,7 @@ export default function ModalTaskDetail({
   onOpenDates,
   onOpenMove,
   onSave,
+  onNotEdit,
 }: ModalCardDetailProps) {
   return (
     <div className="overlayModalDetail" onClick={onClose}>
@@ -63,6 +65,7 @@ export default function ModalTaskDetail({
                 onKeyDown={(e) => {
                   if (e.key === "Enter") onEditTitle();
                 }}
+                onBlur={onNotEdit}
               />
             ) : (
               <span className="titleText" onDoubleClick={onEditTitle}>

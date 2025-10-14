@@ -491,6 +491,9 @@ export default function DashBoardDetail() {
             handleSaveTask(undefined, true);
             setIsTitleEditable(false);
           }}
+          onNotEdit={() => {
+            setIsTitleEditable(false);
+          }}
         />
       )}
 
