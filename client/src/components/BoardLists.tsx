@@ -66,7 +66,7 @@ export default function BoardLists({
       list_id: listId,
       title,
       description: "",
-      status: "pending",
+      status: false,
       due_date: new Date().toISOString(),
       created_at: new Date().toISOString(),
     };
@@ -164,10 +164,8 @@ export default function BoardLists({
               >
                 <img
                   className="tickerCardSuccess"
-                  src={
-                    card.status === "done" ? iconTickerSuccess : iconTickerFalse
-                  }
-                  alt={card.status === "done" ? "completed" : "not completed"}
+                  src={card.status ? iconTickerSuccess : iconTickerFalse}
+                  alt={card.status ? "completed" : "not completed"}
                 />
                 {card.title}
               </div>

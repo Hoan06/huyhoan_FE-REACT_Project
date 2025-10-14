@@ -10,11 +10,11 @@ import MDEditor from "@uiw/react-md-editor";
 interface ModalCardDetailProps {
   title: string;
   value: string | undefined;
-  isCompleted: boolean;
+  status: boolean;
   isTitleEditable: boolean;
   onClose: () => void;
   onDelete: () => void;
-  onToggleComplete: () => void;
+  onToggleStatus: () => void;
   onEditTitle: () => void;
   onChangeTitle: (newTitle: string) => void;
   onChangeValue: (newValue?: string) => void;
@@ -27,11 +27,11 @@ interface ModalCardDetailProps {
 export default function ModalTaskDetail({
   title,
   value,
-  isCompleted,
+  status,
   isTitleEditable,
   onClose,
   onDelete,
-  onToggleComplete,
+  onToggleStatus,
   onEditTitle,
   onChangeTitle,
   onChangeValue,
@@ -46,9 +46,9 @@ export default function ModalTaskDetail({
         {/* HEADER */}
         <div className="headerModalDetail">
           <div className="block1ModalDetail">
-            <span className="iconCircle" onClick={onToggleComplete}>
+            <span className="iconCircle" onClick={onToggleStatus}>
               <img
-                src={isCompleted ? iconTickerSuccess : iconTickerFalse}
+                src={status ? iconTickerSuccess : iconTickerFalse}
                 alt="status"
                 className="iconTickerImg"
               />
@@ -118,7 +118,6 @@ export default function ModalTaskDetail({
               </button>
             </div>
           </div>
-
           {/* SIDEBAR */}
           <div className="block2MainDetail">
             <div className="sideButton" onClick={onOpenLabels}>

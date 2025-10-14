@@ -30,7 +30,7 @@ export interface Task {
   list_id: number;
   title: string;
   description: string;
-  status: string;
+  status: boolean;
   due_date: string;
   created_at: string;
 }

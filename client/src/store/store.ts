@@ -6,6 +6,7 @@ import boardReducer from "../api/boardSlice";
 import dashboardReducer from "../api/dashBoardDetailSlice";
 import listReducer from "../api/listSlice";
 import taskReducer from "../api/taskSlice";
+import tagReducer from "../api/tagSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     dashboard: dashboardReducer,
     list: listReducer,
     task: taskReducer,
+    tag: tagReducer,
   },
 });
 
